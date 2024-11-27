@@ -41,7 +41,7 @@ export const project = defineType({
     defineField({
       name: 'mainImage',
       title: 'Main Image',
-      type: 'image',  // This is the image field
+      type: 'image',  
       options: {
         hotspot: true,  // Optional: allows image cropping/focusing
       },

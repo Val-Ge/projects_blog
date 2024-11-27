@@ -3,10 +3,22 @@ import { EyeIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { project } from '@/sanity/schemaTypes/project';
+import { Project } from '@/sanity/types';
+import { urlFor } from '@/sanity/lib/sanityImageUrl'
+
+export type ProjectCardType = {
+  _id: string;
+  title: string | null | undefined;
+  slug: { current: string } | null;
+  views: number | null | undefined;
+  description: string | null | undefined;
+  category: string | null | undefined;
+  mainImage: { asset: { url: string | null } | null } | null | undefined;
+  explanation: null | undefined;
+};
 
 export default function ProjectCard({ post }: { post: ProjectCardType }) {
-  const { views, title, category, _id, mainImage, description } = post; // Use 'post' for the destructured data
+  const { views, title, category, _id, mainImage, description, explanation } = post; // Use 'post' for the destructured data
   
   return (
     <li className='project-card group'>
@@ -27,10 +39,11 @@ export default function ProjectCard({ post }: { post: ProjectCardType }) {
         </p>
         
         {/* Check if mainImage exists and render it */}
-        {mainImage?.asset?.url && (  // Use 'mainImage' from 'post' instead of 'project'
+        {mainImage?.asset && (  // Use 'mainImage' from 'post' instead of 'project'
           <Image
-            src={mainImage.asset.url}  // Use the correct 'mainImage'
-            alt={title}  // Use the title as the alt text
+            // src={mainImage.asset.url}  // Use the correct 'mainImage'
+            src={urlFor(mainImage).url()}  // Generate the image URL dynamically
+            alt={title ?? 'Project image'}  // Fallback for undefined title
             width={500}   // Set the desired width
             height={300}  // Set the desired height
             layout="responsive"  // Or any other layout options
@@ -39,7 +52,7 @@ export default function ProjectCard({ post }: { post: ProjectCardType }) {
       </Link>
 
       <div className='flex-between gap-3 mt-5'>
-        <Link href={`/query=${category.toLowerCase()}`}>
+        <Link href={`/query=${category?.toLowerCase()}`}>
           <p className='text-16-medium'>{category}</p>
         </Link>
         
