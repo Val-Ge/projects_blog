@@ -202,6 +202,12 @@ export type PROJECTS_BY_ID_QUERYResult = {
     } | null;
   } | null;
 } | null;
+// Variable: PROJECT_VIEWS_QUERY
+// Query: *[_type == "project" && _id == $id][0]{      _id,       views,    }
+export type PROJECT_VIEWS_QUERYResult = {
+  _id: string;
+  views: number | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -209,5 +215,6 @@ declare module "@sanity/client" {
   interface SanityQueries {
     "\n    *[_type == \"project\" && defined(slug.current) && !defined($search) || title match $search || category match $search ]{\n      _id,\n      title,\n      slug, \n      views,\n      description,\n      explanation,\n      category,\n      mainImage {\n        asset-> {\n          url\n        }\n      }\n    }\n  ": PROJECTS_QUERYResult;
     "\n    *[_type == \"project\" && _id == $id][0]{\n      _id,\n      title,\n      slug, \n      views,\n      description,\n      explanation,\n      category,\n      mainImage {\n        asset-> {\n          url\n        }\n      }\n    }\n  ": PROJECTS_BY_ID_QUERYResult;
+    "\n    *[_type == \"project\" && _id == $id][0]{\n      _id, \n      views,\n    }\n  ": PROJECT_VIEWS_QUERYResult;
   }
 }
