@@ -3,10 +3,15 @@ import ProjectCard, { ProjectCardType } from "@/components/ProjectCard";
 import { client } from "@/sanity/lib/client";
 import { PROJECTS_QUERY } from "@/sanity/lib/queries";
 
-export default async function Home({ searchParams }: { searchParams: { query?: string } }) {
-  const query = await searchParams.query || "";
+export default async function Home({ 
+  searchParams,
+ }: { 
+  searchParams: Promise<{ query?: string }> 
+}) {
+  const query = (await searchParams).query || "";
+  const params = {search: query || null }
 
-  const posts = await client.fetch(PROJECTS_QUERY);
+  const posts = await client.fetch(PROJECTS_QUERY, params);
 
   return (
     <>
@@ -25,7 +30,7 @@ export default async function Home({ searchParams }: { searchParams: { query?: s
 
         <ul className='mt-7 card_grid'>
           {posts?.length > 0 ? (
-            posts.map((post) => {
+            posts.map((post: any) => {
               const projectCardPost: ProjectCardType = {
                 ...post,
                 title: post.title ?? undefined,
@@ -33,6 +38,7 @@ export default async function Home({ searchParams }: { searchParams: { query?: s
                 views: post.views ?? undefined,
                 description: post.description ?? undefined,
                 category: post.category ?? undefined,
+                explanation: post.explanation ?? undefined,
                 mainImage: post.mainImage
                   ? {
           

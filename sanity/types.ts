@@ -79,7 +79,7 @@ export type Project = {
   views?: number;
   description?: string;
   category?: string;
-  Explanation?: string;
+  explanation?: string;
   mainImage?: {
     asset?: {
       _ref: string;
@@ -162,26 +162,52 @@ export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: sanity/lib/queries.ts
 // Variable: PROJECTS_QUERY
-// Query: *[_type == "project" && defined(slug.current)]{      _id,      title,      slug,       views,      description,      category,      mainImage {        asset-> {          url        }      },      explanation    }
+// Query: *[_type == "project" && defined(slug.current) && !defined($search) || title match $search || category match $search ]{      _id,      title,      slug,       views,      description,      explanation,      category,      mainImage {        asset-> {          url        }      }    }
 export type PROJECTS_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: null;
+  views: null;
+  description: string | null;
+  explanation: null;
+  category: null;
+  mainImage: null;
+} | {
   _id: string;
   title: string | null;
   slug: Slug | null;
   views: number | null;
   description: string | null;
+  explanation: string | null;
   category: string | null;
   mainImage: {
     asset: {
       url: string | null;
     } | null;
   } | null;
-  explanation: null;
 }>;
+// Variable: PROJECTS_BY_ID_QUERY
+// Query: *[_type == "project" && _id == $id][0]{      _id,      title,      slug,       views,      description,      explanation,      category,      mainImage {        asset-> {          url        }      }    }
+export type PROJECTS_BY_ID_QUERYResult = {
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  views: number | null;
+  description: string | null;
+  explanation: string | null;
+  category: string | null;
+  mainImage: {
+    asset: {
+      url: string | null;
+    } | null;
+  } | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n    *[_type == \"project\" && defined(slug.current)]{\n      _id,\n      title,\n      slug, \n      views,\n      description,\n      category,\n      mainImage {\n        asset-> {\n          url\n        }\n      },\n      explanation\n    }\n  ": PROJECTS_QUERYResult;
+    "\n    *[_type == \"project\" && defined(slug.current) && !defined($search) || title match $search || category match $search ]{\n      _id,\n      title,\n      slug, \n      views,\n      description,\n      explanation,\n      category,\n      mainImage {\n        asset-> {\n          url\n        }\n      }\n    }\n  ": PROJECTS_QUERYResult;
+    "\n    *[_type == \"project\" && _id == $id][0]{\n      _id,\n      title,\n      slug, \n      views,\n      description,\n      explanation,\n      category,\n      mainImage {\n        asset-> {\n          url\n        }\n      }\n    }\n  ": PROJECTS_BY_ID_QUERYResult;
   }
 }

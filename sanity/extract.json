@@ -396,7 +396,7 @@
         },
         "optional": true
       },
-      "Explanation": {
+      "explanation": {
         "type": "objectAttribute",
         "value": {
           "type": "string"

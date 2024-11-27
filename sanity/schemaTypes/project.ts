@@ -35,7 +35,7 @@ export const project = defineType({
     //   validation: (Rule) => Rule.required(),
     // }),
     defineField({
-      name: "Explanation",
+      name: "explanation",
       type: "markdown",
     }),
     defineField({

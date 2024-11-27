@@ -14,11 +14,11 @@ export type ProjectCardType = {
   description: string | null | undefined;
   category: string | null | undefined;
   mainImage: { asset: { url: string | null } | null } | null | undefined;
-  explanation: null | undefined;
+  explanation: string | null | undefined;
 };
 
 export default function ProjectCard({ post }: { post: ProjectCardType }) {
-  const { views, title, category, _id, mainImage, description, explanation } = post; // Use 'post' for the destructured data
+  const { views, title, category, _id, mainImage, description} = post; // Use 'post' for the destructured data
   
   return (
     <li className='project-card group'>
